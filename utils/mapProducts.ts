@@ -1,4 +1,4 @@
-import { Product, RawDataProduct } from "@/types/product";
+import type { Product, RawDataProduct } from "@/types/product";
 import raw from "@/products.json";
 
 const parseProductSize = (size: string) => {

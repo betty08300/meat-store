@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+import type { Product } from "@/types/product";
 
 export const parseFormData = (data: Product) => ({
   ...data,

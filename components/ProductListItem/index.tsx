@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import {
   Card,
@@ -21,12 +20,10 @@ type Props = {
 };
 
 const ProductListItem = ({ product }: Props) => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleDeleteClick = () => {
     setOpenDialog(true);
   };
 
@@ -39,23 +36,9 @@ const ProductListItem = ({ product }: Props) => {
     setOpenDialog(false);
   };
 
-  const handleClick = () => {
-    router.push(`/${product.id}`);
-  };
-
   return (
     <>
-      <Card
-        variant="outlined"
-        sx={{
-          cursor: "pointer",
-          transition: "box-shadow 0.2s",
-          "&:hover": {
-            boxShadow: 3,
-          },
-        }}
-        onClick={handleClick}
-      >
+      <Card variant="outlined">
         <CardContent>
           <Stack
             direction="row"
@@ -90,10 +73,7 @@ const ProductListItem = ({ product }: Props) => {
             </Stack>
 
             <Stack direction="row" spacing={1}>
-              <Link
-                href={`/${product.id}/edit`}
-                onClick={(e) => e.stopPropagation()}
-              >
+              <Link href={`/${product.id}/edit`}>
                 <Button variant="outlined" size="small">
                   Edit
                 </Button>
