@@ -13,10 +13,11 @@ import Link from "next/link";
 import type { Product } from "@/types/product";
 import { generateRandomId } from "@/utils/generateRandomId";
 
-type FormData = {
-  value?: number;
-  unit?: string;
-} & Partial<Product>;
+type FormData = Omit<Partial<Product>, "price"> & {
+  productSizeValue?: number;
+  productSizeUnit?: string;
+  price?: string;
+};
 
 type ProductFormProps = {
   initialData?: FormData;
@@ -41,10 +42,17 @@ const ProductForm = ({
   const handleChange =
     (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      if (field === "price" || field === "value") {
+      if (field === "price") {
+        // Ensure max 2 decimal places for price
+        const formatted = value.replace(
+          /^(\d+)(\.\d{0,2})?.*$/,
+          (_, int, dec) => int + (dec || ""),
+        );
+        setFormData({ ...formData, price: formatted });
+      } else if (field === "productSizeValue") {
         setFormData({
           ...formData,
-          [field]: parseFloat(value) || 0,
+          productSizeValue: parseFloat(value) || 0,
         });
       } else {
         setFormData({
@@ -56,17 +64,30 @@ const ProductForm = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { item, price, plu_upc = "", id, catId, uom, value, unit } = formData;
+    const {
+      item,
+      price,
+      plu_upc = "",
+      id,
+      catId,
+      uom,
+      productSizeValue,
+      productSizeUnit,
+    } = formData;
     const missing = !item || !price || !catId || !uom;
     setShowGeneralError(missing);
     if (missing) return;
 
     const productSize =
-      value !== 0 && value !== undefined && unit ? { value, unit } : undefined;
+      productSizeValue !== 0 &&
+      productSizeValue !== undefined &&
+      productSizeUnit
+        ? { value: productSizeValue, unit: productSizeUnit }
+        : undefined;
 
     onSubmit({
       item,
-      price,
+      price: parseFloat(price),
       plu_upc,
       id: id || generateRandomId(),
       catId,
@@ -173,8 +194,8 @@ const ProductForm = ({
                 fullWidth
                 label="Product Size (Number)"
                 type="number"
-                value={formData.value || ""}
-                onChange={handleChange("value")}
+                value={formData.productSizeValue || ""}
+                onChange={handleChange("productSizeValue")}
                 variant="outlined"
               />
             </FormControl>
@@ -182,8 +203,8 @@ const ProductForm = ({
               <TextField
                 fullWidth
                 label="Product Size (Unit)"
-                value={formData.unit || ""}
-                onChange={handleChange("unit")}
+                value={formData.productSizeUnit || ""}
+                onChange={handleChange("productSizeUnit")}
                 variant="outlined"
               />
             </FormControl>
