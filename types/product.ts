@@ -22,3 +22,14 @@ export type Product = {
   catId: string;
   uom: string;
 };
+
+export type ProductSort =
+  | "NONE"
+  | "NAME_ASC"
+  | "NAME_DESC"
+  | "PRICE_ASC"
+  | "PRICE_DESC"
+  | "SIZE_ASC"
+  | "SIZE_DESC";
+
+export type ProductGroup = "NONE" | "CAT_ID" | "UOM";
