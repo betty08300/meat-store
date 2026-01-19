@@ -22,9 +22,14 @@ const Home = () => {
   const groups = useAppSelector(selector);
 
   return (
-    <Stack>
+    <Stack gap={2}>
       <Typography variant="h4">Meat Store Lists</Typography>
-      <Stack>
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <ProductGroupBy value={groupBy} onChange={setGroupBy} />
         <ProductSortBy value={sort} onChange={setSort} />
       </Stack>

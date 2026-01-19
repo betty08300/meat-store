@@ -9,7 +9,15 @@ type Props = {
 
 const ProductList = ({ groups, groupBy }: Props) => {
   return (
-    <Stack>
+    <Stack
+      spacing={3}
+      sx={{
+        border: "1px solid",
+        borderColor: "divider",
+        padding: 4,
+        borderRadius: 4,
+      }}
+    >
       {Object.entries(groups).map(([groupKey, products]) => (
         <ProductListGroup
           key={groupKey}
