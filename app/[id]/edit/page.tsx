@@ -11,7 +11,7 @@ import type { Product } from "@/types/product";
 import ProductForm from "@/components/ProductForm";
 import { parseFormData } from "@/utils/parseFormData";
 
-export default function EditProduct() {
+const EditProduct = () => {
   const params = useParams();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -59,4 +59,6 @@ export default function EditProduct() {
       </Box>
     </Container>
   );
-}
+};
+
+export default EditProduct;
